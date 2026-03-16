@@ -60,3 +60,31 @@ data/
 ├── masks/        # if segmentation task
 └── metadata.csv
 ```
+
+## Project Structure
+ 
+## Running
+ 
+  
+## Models
+ 
+| Model         | Type        | Training          |
+|---------------|-------------|-------------------|
+| Custom CNN    | CNN         | From scratch      |
+| ResNet-50     | CNN         | Fine-tuned        |
+| Swin-T Tiny   | Transformer | Fine-tuned        |
+| CLIP ViT-B/32 | VLM         | Zero-shot only    |
+| DermLIP       | Medical VLM | Zero-shot only    |
+ 
+## Ablations
+ 
+- **LR sweep**: `ABLATION_MODE = True` in `train_resnet.py` — sweeps [1e-3, 1e-4, 1e-5, 1e-6]
+- **Class imbalance**: Toggle `USE_WEIGHTED` in any `train_*.py`
+- **Prompt sensitivity**: Automatically run in `eval_clip.py`
+ 
+## Key Design Decisions
+ 
+- `train.py` is shared across all supervised models — one fix applies everywhere
+- `val_loader` is split from train set (10%) so val loss is tracked properly each epoch
+- CLIP uses its own normalization (`clip_transform` in `dataset.py`) — separate from supervised models
+- Class weights computed from **training** set targets (not test set)

@@ -12,6 +12,7 @@ dependencies:
   - tqdm
   - jupyter
   - pip
+  - seaborn
   - pip:
     - torch
     - torchvision
