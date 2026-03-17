@@ -16,3 +16,4 @@ dependencies:
   - pip:
     - torch
     - torchvision
+    - timm

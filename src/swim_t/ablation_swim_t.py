@@ -1,6 +1,7 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-sys.path.insert(0, os.path.dirname(__file__))  
+sys.path.insert(0, os.path.dirname(__file__))
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,8 +9,9 @@ import json
 
 from dataset import get_loaders, get_class_weights, NUM_CLASSES, CLASS_NAMES
 from train import fit
-from custom_cnn import custom_CNN
-from utils import plot_history, plot_confusion_matrix, visualize_predictions, print_classification_report, compute_macro_auc
+from swin_t import build_swin_tiny
+from utils import plot_history, plot_confusion_matrix, visualize_predictions, \
+                  print_classification_report, compute_macro_auc
 
 # ── Config ────────────────────────────────────────────────────────────────────
 # Sequential ablation — each axis uses best result from previous axis
@@ -18,7 +20,7 @@ from utils import plot_history, plot_confusion_matrix, visualize_predictions, pr
 # Axis 3: Imbalance  (best optimizer + best LR)
 
 NUM_EPOCHS = 20
-MODEL_NAME = "cnn"
+MODEL_NAME = "swin_t"
 BASE_OUTPUT = os.path.join("results", MODEL_NAME, "ablation")
 
 OPTIMIZERS = ["sgd", "adam"]
@@ -48,14 +50,15 @@ def run_single(optimizer_name, lr, imbalance, output_dir):
         use_sampler=(imbalance == "sampler")
     )
 
-    model = custom_CNN(num_classes=NUM_CLASSES).to(device)
+    model = build_swin_tiny(num_classes=NUM_CLASSES).to(device)
     optimizer = build_optimizer(model, optimizer_name, lr)
     criterion = build_criterion(imbalance, device)
     tag = f"{optimizer_name}_lr{lr}_{imbalance}"
-    run_label = f"CNN | {optimizer_name} | lr={lr} | {imbalance}"
+    run_label = f"Swin-T | {optimizer_name} | lr={lr} | {imbalance}"
     print(f"\n── {run_label} ──")
 
-    history = fit(model, train_loader, val_loader, optimizer, criterion, NUM_EPOCHS, device, output_dir=output_dir)
+    history = fit(model, train_loader, val_loader, optimizer, criterion,
+                  NUM_EPOCHS, device, output_dir=output_dir)
 
     plot_history({run_label: history}, NUM_EPOCHS, output_dir=output_dir, model_name=tag)
     plot_confusion_matrix(model, test_loader, device, CLASS_NAMES, title=run_label, output_dir=output_dir, model_name=tag)
@@ -66,7 +69,7 @@ def run_single(optimizer_name, lr, imbalance, output_dir):
     best_val_acc = max(history["val_acc"])
 
     torch.save(model.state_dict(), os.path.join(output_dir, f"{tag}.pth"))
-    print(f"Saved → {output_dir}/{tag}.pth")
+    print(f"Saved: {output_dir}/{tag}.pth")
 
     return {
         "optimizer": optimizer_name,
@@ -138,5 +141,5 @@ os.makedirs(BASE_OUTPUT, exist_ok=True)
 with open(summary_path, "w") as f:
     json.dump(summary, f, indent=2)
 print(f"\nSummary saved: {summary_path}")
-print(f"\nBest config → optimizer={best_opt} | lr={best_lr} | imbalance={best_imb}")
-print("Update train_cnn.py with these values and run it for the final model.")
+print(f"\nBest config: optimizer={best_opt} | lr={best_lr} | imbalance={best_imb}")
+print("Update train_swin_t.py with these values and run it for the final model.")

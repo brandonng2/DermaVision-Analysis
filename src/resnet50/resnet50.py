@@ -2,7 +2,7 @@ import torch.nn as nn
 from torchvision import models
  
  
-def build_resnet50(num_classes: int = 22, dropout: float = 0.4) -> nn.Module:
+def build_resnet50(num_classes: int = 7, dropout: float = 0.4) -> nn.Module:
     """
     ResNet-50 pretrained on ImageNet with a custom classification head.
     Upgraded from ResNet-34 to match the project outline.
