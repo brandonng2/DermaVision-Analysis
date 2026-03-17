@@ -13,23 +13,23 @@ def make_output_dir(path: str) -> str:
     os.makedirs(path, exist_ok=True)
     return path
 
+
 def _unnormalize(images):
-    """Undo dataset normalization for display. Returns clamped [0,1] tensor."""
     mean = torch.tensor(MEAN).view(3, 1, 1)
-    std  = torch.tensor(STD).view(3, 1, 1)
+    std = torch.tensor(STD).view(3, 1, 1)
     return (images.cpu() * std + mean).clamp(0, 1)
+
 
 # ── Predictions ───────────────────────────────────────────────────────────────
 def get_predictions(model, loader, device):
-    """Return (all_labels, all_preds, all_probs) as numpy arrays."""
     model.eval()
     all_labels, all_preds, all_probs = [], [], []
 
     with torch.no_grad():
         for inputs, labels in loader:
-            inputs  = inputs.to(device)
+            inputs = inputs.to(device)
             outputs = model(inputs)
-            probs   = F.softmax(outputs, dim=1)
+            probs = F.softmax(outputs, dim=1)
             _, preds = torch.max(outputs, 1)
 
             all_labels.extend(labels.cpu().numpy())
@@ -38,11 +38,12 @@ def get_predictions(model, loader, device):
 
     return np.array(all_labels), np.array(all_preds), np.array(all_probs)
 
+
 # ── Classification report ─────────────────────────────────────────────────────
 def print_classification_report(model, loader, device, classes, output_dir=None, model_name="model"):
     labels, preds, _ = get_predictions(model, loader, device)
     report = classification_report(labels, preds, target_names=classes, zero_division=0)
-    print(report)
+
     if output_dir:
         make_output_dir(output_dir)
         fpath = os.path.join(output_dir, f"{model_name}_classification_report.txt")
@@ -90,14 +91,15 @@ def plot_history(histories: dict, num_epochs: int, output_dir=None, model_name="
 
     for name, h in histories.items():
         axs[0].plot(epochs, h["train_loss"], label=f"{name} train")
-        axs[0].plot(epochs, h["val_loss"], label=f"{name} val", linestyle="--")
-        axs[1].plot(epochs, h["train_acc"], label=f"{name} train")
-        axs[1].plot(epochs, h["val_acc"], label=f"{name} val", linestyle="--")
+        axs[0].plot(epochs, h["val_loss"],   label=f"{name} val", linestyle="--")
+        axs[1].plot(epochs, h["train_acc"],  label=f"{name} train")
+        axs[1].plot(epochs, h["val_acc"],    label=f"{name} val", linestyle="--")
 
-    for ax, title, ylabel in zip(axs, 
-                                 ["Training & Validation Loss", "Training & Validation Accuracy"],
-                                 ["Loss", "Accuracy (%)"],
-                                ):
+    for ax, title, ylabel in zip(
+        axs,
+        ["Training & Validation Loss", "Training & Validation Accuracy"],
+        ["Loss", "Accuracy (%)"],
+    ):
         ax.set_title(title)
         ax.set_xlabel("Epoch")
         ax.set_ylabel(ylabel)
@@ -131,9 +133,11 @@ def visualize_predictions(model, loader, device, classes, num_images=8, output_d
     fig, axes = plt.subplots(2, 4, figsize=(16, 8))
     for i, ax in enumerate(axes.flat):
         ax.imshow(np.transpose(imgs[i].numpy(), (1, 2, 0)))
-        color = 'green' if preds[i] == labels[i] else 'red'
-        ax.set_xlabel(f"T: {classes[labels[i]]}\nP: {classes[preds[i]]}",
-                      fontsize=8, color=color, labelpad=6)
+        color = 'green' if preds[i].item() == labels[i].item() else 'red'
+        ax.set_xlabel(
+            f"T: {classes[labels[i].item()]}\nP: {classes[preds[i].item()]}",
+            fontsize=8, color=color, labelpad=6
+        )
         ax.set_xticks([])
         ax.set_yticks([])
 
@@ -152,10 +156,10 @@ def visualize_predictions(model, loader, device, classes, num_images=8, output_d
 # ── Grad-CAM ──────────────────────────────────────────────────────────────────
 class GradCAM:
     def __init__(self, model, target_layer):
-        self.model        = model
+        self.model = model
         self.target_layer = target_layer
-        self.gradients    = None
-        self.activations  = None
+        self.gradients = None
+        self.activations = None
         self._register_hooks()
 
     def _register_hooks(self):
@@ -188,7 +192,7 @@ class GradCAM:
 
 
 def show_gradcam(model, target_layer, loader, device, classes, num_images=4, title="", output_dir=None, model_name="model"):
-    cam_extractor = GradCAM(model, target_layer)
+    cam_extractor  = GradCAM(model, target_layer)
     images, labels = next(iter(loader))
 
     fig, axes = plt.subplots(2, num_images, figsize=(4 * num_images, 8))
@@ -198,7 +202,7 @@ def show_gradcam(model, target_layer, loader, device, classes, num_images=4, tit
         img_np = np.transpose(_unnormalize(images[i]).numpy(), (1, 2, 0))
 
         axes[0, i].imshow(img_np)
-        axes[0, i].set_title(f"True: {classes[labels[i]]}", fontsize=9)
+        axes[0, i].set_title(f"True: {classes[labels[i].item()]}", fontsize=9)
         axes[0, i].axis('off')
 
         axes[1, i].imshow(img_np)
