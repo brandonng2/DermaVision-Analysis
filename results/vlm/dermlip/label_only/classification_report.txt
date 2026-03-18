@@ -1,0 +1,16 @@
+Model: DermLIP
+Template: label_only — "{c}"
+
+              precision    recall  f1-score   support
+
+         MEL       0.23      0.71      0.35       112
+          NV       0.92      0.43      0.59       671
+         BCC       0.72      0.63      0.67        52
+       AKIEC       0.24      0.56      0.33        32
+         BKL       0.67      0.07      0.13       110
+          DF       0.05      1.00      0.10        11
+        VASC       0.50      0.29      0.36        14
+
+    accuracy                           0.44      1002
+   macro avg       0.48      0.53      0.36      1002
+weighted avg       0.77      0.44      0.50      1002

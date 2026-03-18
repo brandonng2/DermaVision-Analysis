@@ -1,0 +1,16 @@
+Model: DermLIP
+Template: skin_lesion — "a skin lesion showing {c}"
+
+              precision    recall  f1-score   support
+
+         MEL       0.22      0.69      0.34       112
+          NV       0.93      0.60      0.73       671
+         BCC       0.69      0.46      0.55        52
+       AKIEC       0.15      0.66      0.25        32
+         BKL       0.75      0.08      0.15       110
+          DF       0.21      0.73      0.32        11
+        VASC       0.50      0.14      0.22        14
+
+    accuracy                           0.54      1002
+   macro avg       0.49      0.48      0.37      1002
+weighted avg       0.78      0.54      0.58      1002

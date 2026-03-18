@@ -1,0 +1,16 @@
+Model: DermLIP
+Template: this_is — "this is a skin image of {c}"
+
+              precision    recall  f1-score   support
+
+         MEL       0.30      0.55      0.39       112
+          NV       0.89      0.80      0.84       671
+         BCC       0.70      0.63      0.67        52
+       AKIEC       0.24      0.53      0.33        32
+         BKL       0.82      0.08      0.15       110
+          DF       0.24      0.82      0.38        11
+        VASC       0.47      0.64      0.55        14
+
+    accuracy                           0.68      1002
+   macro avg       0.52      0.58      0.47      1002
+weighted avg       0.77      0.68      0.68      1002

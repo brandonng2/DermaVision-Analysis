@@ -18,12 +18,13 @@
     }
   },
   "prompt_templates": {
+    "label_only": "{c}",
     "dermoscopy": "a dermoscopy image of {c}",
     "dermatoscopic": "a dermatoscopic image of {c}",
     "skin_lesion": "a skin lesion showing {c}",
     "this_is": "this is a skin image of {c}",
     "photo_of": "a photo of {c}",
-    "clinical": "a clinical image of {c}, a skin disease"
+    "clinical": "a clinical photograph of {c}"
   },
   "class_names": [
     "melanoma",

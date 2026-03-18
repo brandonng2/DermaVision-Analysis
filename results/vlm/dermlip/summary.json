@@ -1,0 +1,125 @@
+{
+  "prompt_sweep": {
+    "label_only": {
+      "template": "{c}",
+      "accuracy": 44.2116,
+      "macro_auc": 0.874,
+      "micro_auc": 0.831,
+      "per_class_auc": {
+        "MEL": 0.7527,
+        "NV": 0.867,
+        "BCC": 0.9795,
+        "AKIEC": 0.901,
+        "BKL": 0.6866,
+        "DF": 0.9626,
+        "VASC": 0.9683
+      }
+    },
+    "dermoscopy": {
+      "template": "a dermoscopy image of {c}",
+      "accuracy": 51.3972,
+      "macro_auc": 0.8533,
+      "micro_auc": 0.8489,
+      "per_class_auc": {
+        "MEL": 0.7042,
+        "NV": 0.8667,
+        "BCC": 0.9801,
+        "AKIEC": 0.8902,
+        "BKL": 0.7127,
+        "DF": 0.9607,
+        "VASC": 0.8582
+      }
+    },
+    "dermatoscopic": {
+      "template": "a dermatoscopic image of {c}",
+      "accuracy": 54.6906,
+      "macro_auc": 0.8602,
+      "micro_auc": 0.859,
+      "per_class_auc": {
+        "MEL": 0.7371,
+        "NV": 0.8692,
+        "BCC": 0.9775,
+        "AKIEC": 0.8764,
+        "BKL": 0.6747,
+        "DF": 0.9535,
+        "VASC": 0.9328
+      }
+    },
+    "skin_lesion": {
+      "template": "a skin lesion showing {c}",
+      "accuracy": 54.0918,
+      "macro_auc": 0.8745,
+      "micro_auc": 0.8762,
+      "per_class_auc": {
+        "MEL": 0.7725,
+        "NV": 0.8578,
+        "BCC": 0.9797,
+        "AKIEC": 0.9094,
+        "BKL": 0.6839,
+        "DF": 0.9723,
+        "VASC": 0.9461
+      }
+    },
+    "this_is": {
+      "template": "this is a skin image of {c}",
+      "accuracy": 67.7645,
+      "macro_auc": 0.868,
+      "micro_auc": 0.9062,
+      "per_class_auc": {
+        "MEL": 0.7304,
+        "NV": 0.8709,
+        "BCC": 0.9787,
+        "AKIEC": 0.88,
+        "BKL": 0.7227,
+        "DF": 0.9621,
+        "VASC": 0.9314
+      }
+    },
+    "photo_of": {
+      "template": "a photo of {c}",
+      "accuracy": 60.3792,
+      "macro_auc": 0.8604,
+      "micro_auc": 0.8766,
+      "per_class_auc": {
+        "MEL": 0.726,
+        "NV": 0.87,
+        "BCC": 0.9771,
+        "AKIEC": 0.8776,
+        "BKL": 0.6496,
+        "DF": 0.9728,
+        "VASC": 0.9498
+      }
+    },
+    "clinical": {
+      "template": "a clinical photograph of {c}",
+      "accuracy": 49.7006,
+      "macro_auc": 0.8523,
+      "micro_auc": 0.8521,
+      "per_class_auc": {
+        "MEL": 0.7133,
+        "NV": 0.8538,
+        "BCC": 0.9806,
+        "AKIEC": 0.8819,
+        "BKL": 0.6584,
+        "DF": 0.9568,
+        "VASC": 0.9211
+      }
+    }
+  },
+  "best_config": {
+    "template": "this_is",
+    "template_str": "this is a skin image of {c}",
+    "accuracy": 67.7645,
+    "macro_auc": 0.868,
+    "micro_auc": 0.9062,
+    "per_class_auc": {
+      "MEL": 0.7304,
+      "NV": 0.8709,
+      "BCC": 0.9787,
+      "AKIEC": 0.88,
+      "BKL": 0.7227,
+      "DF": 0.9621,
+      "VASC": 0.9314
+    }
+  }
+}

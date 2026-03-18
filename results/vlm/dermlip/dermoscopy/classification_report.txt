@@ -1,0 +1,16 @@
+Model: DermLIP
+Template: dermoscopy — "a dermoscopy image of {c}"
+
+              precision    recall  f1-score   support
+
+         MEL       0.23      0.63      0.33       112
+          NV       0.97      0.54      0.69       671
+         BCC       0.55      0.81      0.66        52
+       AKIEC       0.15      0.69      0.24        32
+         BKL       0.86      0.05      0.10       110
+          DF       0.13      0.82      0.22        11
+        VASC       0.50      0.43      0.46        14
+
+    accuracy                           0.51      1002
+   macro avg       0.48      0.57      0.39      1002
+weighted avg       0.81      0.51      0.56      1002

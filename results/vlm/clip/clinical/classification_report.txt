@@ -1,0 +1,16 @@
+Model: CLIP
+Template: clinical — "a clinical photograph of {c}"
+
+              precision    recall  f1-score   support
+
+         MEL       0.12      0.97      0.21       112
+          NV       0.00      0.00      0.00       671
+         BCC       0.29      0.08      0.12        52
+       AKIEC       0.26      0.16      0.20        32
+         BKL       0.50      0.01      0.02       110
+          DF       0.00      0.00      0.00        11
+        VASC       0.00      0.00      0.00        14
+
+    accuracy                           0.12      1002
+   macro avg       0.17      0.17      0.08      1002
+weighted avg       0.09      0.12      0.04      1002
