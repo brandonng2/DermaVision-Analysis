@@ -1,0 +1,37 @@
+{
+  "paths": {
+    "image_dir": "data/images",
+    "output_dir": "results/vlm"
+  },
+  "loader": {
+    "batch_size": 128,
+    "num_workers": 4
+  },
+  "models": {
+    "CLIP": {
+      "model_id": "ViT-B-16",
+      "pretrained": "openai"
+    },
+    "DermLIP": {
+      "model_id": "hf-hub:redlessone/DermLIP_ViT-B-16",
+      "pretrained": null
+    }
+  },
+  "prompt_templates": {
+    "dermoscopy": "a dermoscopy image of {c}",
+    "dermatoscopic": "a dermatoscopic image of {c}",
+    "skin_lesion": "a skin lesion showing {c}",
+    "this_is": "this is a skin image of {c}",
+    "photo_of": "a photo of {c}",
+    "clinical": "a clinical image of {c}, a skin disease"
+  },
+  "class_names": [
+    "melanoma",
+    "melanocytic nevi",
+    "basal cell carcinoma",
+    "actinic keratosis",
+    "benign keratosis",
+    "dermatofibroma",
+    "vascular lesions"
+  ]
+}

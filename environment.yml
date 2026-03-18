@@ -13,7 +13,9 @@ dependencies:
   - jupyter
   - pip
   - seaborn
+  - pillow
   - pip:
     - torch
     - torchvision
     - timm
+    - open_clip_torch
