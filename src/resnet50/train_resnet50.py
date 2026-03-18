@@ -1,6 +1,8 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.dirname(__file__))
+import json
+from pathlib import Path
 
 import torch
 import torch.nn as nn
@@ -13,12 +15,17 @@ from utils import plot_history, plot_confusion_matrix, visualize_predictions, \
                   print_classification_report, compute_macro_auc
 
 # ── Config (best config from ablation) ───────────────────────────────────────
-MODEL_NAME = "resnet50"
-OUTPUT_DIR = os.path.join("results", MODEL_NAME, "best_model")
-NUM_EPOCHS = 20
-OPTIMIZER  = "sgd"      # update after running ablation_resnet50.py
-LR         = 0.001        # update after running ablation_resnet50.py
-IMBALANCE  = "none"  # update after running ablation_resnet50.py
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+with open(PROJECT_ROOT / "configs" / "resnet50.json", "r") as f:
+    CFG = json.load(f)
+
+MODEL_NAME = CFG["model_name"]
+OUTPUT_DIR = str(PROJECT_ROOT / CFG["paths"]["best_output_dir"])
+BEST_MODEL_PATH = str(PROJECT_ROOT / CFG["paths"]["best_model_path"])
+NUM_EPOCHS = int(CFG["training"]["num_epochs"])
+OPTIMIZER = CFG["training"]["optimizer"]
+LR = float(CFG["training"]["lr"])
+IMBALANCE = CFG["training"]["imbalance"]
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}")
@@ -55,5 +62,5 @@ visualize_predictions(model, test_loader, device, CLASS_NAMES, output_dir=OUTPUT
 auc = compute_macro_auc(model, test_loader, device, NUM_CLASSES)
 
 # ── Save ──────────────────────────────────────────────────────────────────────
-torch.save(model.state_dict(), os.path.join(OUTPUT_DIR, "best_resnet50.pth"))
-print(f"Saved: {OUTPUT_DIR}/resnet50.pth")
+torch.save(model.state_dict(), BEST_MODEL_PATH)
+print(f"Saved: {BEST_MODEL_PATH}")

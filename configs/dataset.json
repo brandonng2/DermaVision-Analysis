@@ -1,0 +1,21 @@
+{
+	"paths": {
+		"image_dir": "data/images",
+		"csv_path": "data/GroundTruth.csv",
+		"results_dir": "results"
+	},
+	"image": {
+		"size": 224,
+		"mean": [0.763, 0.546, 0.57],
+		"std": [0.141, 0.152, 0.169]
+	},
+	"loader": {
+		"batch_size": 32,
+		"num_workers": 4
+	},
+	"split": {
+		"val_size": 0.1,
+		"test_size": 0.1,
+		"random_state": 42
+	}
+}

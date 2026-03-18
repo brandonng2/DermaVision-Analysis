@@ -1,0 +1,20 @@
+{
+	"model_name": "cnn",
+	"training": {
+		"num_epochs": 20,
+		"optimizer": "adam",
+		"lr": 0.0001,
+		"imbalance": "weighted"
+	},
+	"ablation": {
+		"optimizers": ["sgd", "adam"],
+		"lr_values": [0.001, 0.0001, 0.00001, 0.000001],
+		"imbalances": ["none", "weighted", "sampler"]
+	},
+	"paths": {
+		"module_path": "src/cnn/custom_cnn.py",
+		"best_output_dir": "results/cnn/best_model",
+		"best_model_path": "results/cnn/best_model/best_cnn.pth",
+		"ablation_output_dir": "results/cnn/ablation"
+	}
+}

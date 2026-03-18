@@ -1,6 +1,8 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.dirname(__file__))  
+import json
+from pathlib import Path
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -11,12 +13,17 @@ from custom_cnn import custom_CNN
 from utils import plot_history, plot_confusion_matrix, visualize_predictions, print_classification_report, compute_macro_auc
 
 # ── Config (best config from ablation) ───────────────────────────────────────
-MODEL_NAME = "cnn"
-OUTPUT_DIR = os.path.join("results", MODEL_NAME, "best_model")
-NUM_EPOCHS = 20
-OPTIMIZER  = "adam"
-LR         = 1e-4
-IMBALANCE  = "weighted"  # best from ablation: highest macro F1, recovers minority classes
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+with open(PROJECT_ROOT / "configs" / "cnn.json", "r") as f:
+    CFG = json.load(f)
+
+MODEL_NAME = CFG["model_name"]
+OUTPUT_DIR = str(PROJECT_ROOT / CFG["paths"]["best_output_dir"])
+BEST_MODEL_PATH = str(PROJECT_ROOT / CFG["paths"]["best_model_path"])
+NUM_EPOCHS = int(CFG["training"]["num_epochs"])
+OPTIMIZER = CFG["training"]["optimizer"]
+LR = float(CFG["training"]["lr"])
+IMBALANCE = CFG["training"]["imbalance"]
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}")
@@ -28,8 +35,15 @@ train_loader, val_loader, test_loader = get_loaders(use_sampler=(IMBALANCE == "s
 
 # ── Model ─────────────────────────────────────────────────────────────────────
 model = custom_CNN(num_classes=NUM_CLASSES).to(device)
-optimizer = optim.Adam(model.parameters(), lr=LR, weight_decay=1e-4)
-criterion = nn.CrossEntropyLoss()
+if OPTIMIZER == "sgd":
+    optimizer = optim.SGD(model.parameters(), lr=LR, momentum=0.9)
+else:
+    optimizer = optim.Adam(model.parameters(), lr=LR, weight_decay=1e-4)
+
+if IMBALANCE == "weighted":
+    criterion = nn.CrossEntropyLoss(weight=get_class_weights(device))
+else:
+    criterion = nn.CrossEntropyLoss()
 
 # ── Train ─────────────────────────────────────────────────────────────────────
 print(f"Training CNN — {OPTIMIZER} | lr={LR} | {IMBALANCE}")
@@ -46,5 +60,5 @@ auc = compute_macro_auc(model, test_loader, device, NUM_CLASSES)
 print(f"Macro AUC: {auc:.4f}")
 
 # ── Save ──────────────────────────────────────────────────────────────────────
-torch.save(model.state_dict(), os.path.join(OUTPUT_DIR, "best_cnn.pth"))
-print(f"Saved: {OUTPUT_DIR}/cnn.pth")
+torch.save(model.state_dict(), BEST_MODEL_PATH)
+print(f"Saved: {BEST_MODEL_PATH}")

@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from pathlib import Path
+import json
 import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
@@ -30,9 +31,25 @@ MEAN = [0.763, 0.546, 0.570]
 STD  = [0.141, 0.152, 0.169]
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-IMAGE_DIR = PROJECT_ROOT / "data" / "images"
-CSV_PATH = PROJECT_ROOT / "data" / "GroundTruth.csv"
-RESULTS_DIR = PROJECT_ROOT / "results"
+DATASET_CONFIG_PATH = PROJECT_ROOT / "configs" / "dataset.json"
+
+
+def _load_dataset_config():
+    with open(DATASET_CONFIG_PATH, "r") as f:
+        return json.load(f)
+
+
+_cfg = _load_dataset_config()
+IMAGE_SIZE = int(_cfg.get("image", {}).get("size", IMAGE_SIZE))
+BATCH_SIZE = int(_cfg.get("loader", {}).get("batch_size", BATCH_SIZE))
+MEAN = _cfg.get("image", {}).get("mean", MEAN)
+STD = _cfg.get("image", {}).get("std", STD)
+IMAGE_DIR = PROJECT_ROOT / _cfg["paths"]["image_dir"]
+CSV_PATH = PROJECT_ROOT / _cfg["paths"]["csv_path"]
+RESULTS_DIR = PROJECT_ROOT / _cfg["paths"]["results_dir"]
+DEFAULT_VAL_SIZE = float(_cfg.get("split", {}).get("val_size", 0.1))
+DEFAULT_TEST_SIZE = float(_cfg.get("split", {}).get("test_size", 0.1))
+DEFAULT_RANDOM_STATE = int(_cfg.get("split", {}).get("random_state", 42))
 
 train_transform = transforms.Compose([
     transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
@@ -68,7 +85,7 @@ class HAM10000Dataset(Dataset):
         return image, int(self.labels[idx])
 
 
-def get_splits(val_size=0.1, test_size=0.1, random_state=42):
+def get_splits(val_size=DEFAULT_VAL_SIZE, test_size=DEFAULT_TEST_SIZE, random_state=DEFAULT_RANDOM_STATE):
     df = pd.read_csv(CSV_PATH)
     labels = df[CLASS_NAMES].values.argmax(axis=1)
 
@@ -83,7 +100,10 @@ def get_splits(val_size=0.1, test_size=0.1, random_state=42):
     return train_df, val_df, test_df
 
 
-def get_loaders(batch_size=BATCH_SIZE, num_workers=4, use_sampler=False):
+def get_loaders(batch_size=BATCH_SIZE, num_workers=None, use_sampler=False):
+    if num_workers is None:
+        num_workers = int(_cfg.get("loader", {}).get("num_workers", 4))
+
     train_df, val_df, test_df = get_splits()
 
     train_ds = HAM10000Dataset(train_df, train_transform)

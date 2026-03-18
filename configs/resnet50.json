@@ -1,0 +1,20 @@
+{
+	"model_name": "resnet50",
+	"training": {
+		"num_epochs": 20,
+		"optimizer": "sgd",
+		"lr": 0.001,
+		"imbalance": "none"
+	},
+	"ablation": {
+		"optimizers": ["sgd", "adam"],
+		"lr_values": [0.001, 0.0001, 0.00001, 0.000001],
+		"imbalances": ["none", "weighted", "sampler"]
+	},
+	"paths": {
+		"module_path": "src/resnet50/resnet50.py",
+		"best_output_dir": "results/resnet50/best_model",
+		"best_model_path": "results/resnet50/best_model/best_resnet50.pth",
+		"ablation_output_dir": "results/resnet50/ablation"
+	}
+}

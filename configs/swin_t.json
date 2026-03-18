@@ -1,0 +1,20 @@
+{
+	"model_name": "swin_t",
+	"training": {
+		"num_epochs": 20,
+		"optimizer": "sgd",
+		"lr": 0.001,
+		"imbalance": "none"
+	},
+	"ablation": {
+		"optimizers": ["sgd", "adam"],
+		"lr_values": [0.001, 0.0001, 0.00001, 0.000001],
+		"imbalances": ["none", "weighted", "sampler"]
+	},
+	"paths": {
+		"module_path": "src/swin_t/swin_t.py",
+		"best_output_dir": "results/swin_t/best_model",
+		"best_model_path": "results/swin_t/best_model/best_swin_t.pth",
+		"ablation_output_dir": "results/swin_t/ablation"
+	}
+}

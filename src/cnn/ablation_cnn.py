@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import json
+from pathlib import Path
 
 from dataset import get_loaders, get_class_weights, NUM_CLASSES, CLASS_NAMES
 from train import fit
@@ -18,12 +19,17 @@ from utils import plot_history, plot_confusion_matrix, visualize_predictions, pr
 # Axis 3: Imbalance  (best optimizer + best LR)
 
 NUM_EPOCHS = 20
-MODEL_NAME = "cnn"
-BASE_OUTPUT = os.path.join("results", MODEL_NAME, "ablation")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+with open(PROJECT_ROOT / "configs" / "cnn.json", "r") as f:
+    CFG = json.load(f)
 
-OPTIMIZERS = ["sgd", "adam"]
-LR_VALUES  = [1e-3, 1e-4, 1e-5, 1e-6]
-IMBALANCES = ["none", "weighted", "sampler"]
+NUM_EPOCHS = int(CFG["training"]["num_epochs"])
+MODEL_NAME = CFG["model_name"]
+BASE_OUTPUT = str(PROJECT_ROOT / CFG["paths"]["ablation_output_dir"])
+
+OPTIMIZERS = list(CFG["ablation"]["optimizers"])
+LR_VALUES = list(CFG["ablation"]["lr_values"])
+IMBALANCES = list(CFG["ablation"]["imbalances"])
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}")

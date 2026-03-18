@@ -2,4 +2,4 @@ data/*
 !data/.gitkeep
 **/__pycache__/
 **/.ipynb_checkpoints/
-*.pth
+results/**/*.pth

@@ -1,0 +1,31 @@
+{
+	"evaluate_best_image_models": {
+		"modules": {
+			"cnn": "src/cnn/custom_cnn.py",
+			"resnet50": "src/resnet50/resnet50.py",
+			"swin_t": "src/swin_t/swin_t.py"
+		},
+		"checkpoints": {
+			"CNN": "results/cnn/best_model/best_cnn.pth",
+			"ResNet-50": "results/resnet50/best_model/best_resnet50.pth",
+			"Swin-T": "results/swin_t/best_model/best_swin_t.pth"
+		},
+		"training_logs": {
+			"CNN": "results/cnn/best_model/training_log.txt",
+			"ResNet-50": "results/resnet50/best_model/training_log.txt",
+			"Swin-T": "results/swin_t/best_model/training_log.txt"
+		}
+	},
+	"ablation_cnn": {
+		"module_path": "src/cnn/custom_cnn.py",
+		"ablation_root": "results/cnn/ablation"
+	},
+	"ablation_resnet50": {
+		"module_path": "src/resnet50/resnet50.py",
+		"ablation_root": "results/resnet50/ablation"
+	},
+	"ablation_swin_t": {
+		"module_path": "src/swin_t/swin_t.py",
+		"ablation_root": "results/swin_t/ablation"
+	}
+}
