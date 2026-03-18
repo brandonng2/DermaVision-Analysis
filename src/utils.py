@@ -50,7 +50,7 @@ def print_classification_report(model, loader, device, classes, output_dir=None,
         with open(fpath, "w") as f:
             f.write(report)
         print(f"Saved classification report: {fpath}")
-
+    return report
 
 # ── Macro AUC ─────────────────────────────────────────────────────────────────
 def compute_macro_auc(model, loader, device, num_classes):

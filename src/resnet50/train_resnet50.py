@@ -16,9 +16,9 @@ from utils import plot_history, plot_confusion_matrix, visualize_predictions, \
 MODEL_NAME = "resnet50"
 OUTPUT_DIR = os.path.join("results", MODEL_NAME, "best_model")
 NUM_EPOCHS = 20
-OPTIMIZER  = "adam"      # update after running ablation_resnet50.py
-LR         = 1e-4        # update after running ablation_resnet50.py
-IMBALANCE  = "weighted"  # update after running ablation_resnet50.py
+OPTIMIZER  = "sgd"      # update after running ablation_resnet50.py
+LR         = 0.001        # update after running ablation_resnet50.py
+IMBALANCE  = "none"  # update after running ablation_resnet50.py
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}")

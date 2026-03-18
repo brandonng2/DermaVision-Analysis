@@ -15,9 +15,9 @@ from utils import plot_history, plot_confusion_matrix, visualize_predictions, pr
 MODEL_NAME = "swin_t"
 OUTPUT_DIR = os.path.join("results", MODEL_NAME, "best_model")
 NUM_EPOCHS = 20
-OPTIMIZER = "adam"      # update after running ablation_swin_t.py
-LR = 1e-4               # update after running ablation_swin_t.py
-IMBALANCE = "weighted"  # update after running ablation_swin_t.py
+OPTIMIZER = "sgd"
+LR = 0.001
+IMBALANCE = "none"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}")
