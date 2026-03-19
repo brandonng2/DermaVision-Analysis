@@ -62,56 +62,31 @@ Dermascope-VLM/
 │   │       └── training_log.txt             # Epoch-by-epoch logs
 │   │
 │   ├── gradcam/                             # Grad-CAM interpretability analysis for all models
-│   │   ├── clip/                            # CLIP Grad-CAM results
+│   │   ├── clip/                            # CLIP Grad-CAM results with examples and metrics
 │   │   │   ├── gradcam_examples.png         # Visual examples
 │   │   │   └── gradcam_metrics.json         # Quantitative metrics
-│   │   ├── cnn/                             # CNN Grad-CAM results
-│   │   │   ├── gradcam_examples.png
-│   │   │   └── gradcam_metrics.json
-│   │   ├── dermlip/                         # DermLIP Grad-CAM results
-│   │   │   ├── gradcam_examples.png
-│   │   │   └── gradcam_metrics.json
+│   │   ├── cnn/                             # CNN Grad-CAM results (w/ png and json)
+│   │   ├── dermlip/                         # DermLIP Grad-CAM results (w/ png and json)
 │   │   ├── figures/                         # Comprehensive analysis figures
-│   │   │   ├── fig1_all_correct.png         # Correct predictions across models
-│   │   │   ├── fig2_disagreement.png        # Model disagreement cases
-│   │   │   ├── fig3_minority_fail.png       # Minority class failures
-│   │   │   ├── fig4_clip_vs_dermlip.png     # VLM comparison
-│   │   │   └── fig5_supervised.png          # Supervised model analysis
-│   │   ├── resnet50/                        # ResNet-50 Grad-CAM results
-│   │   │   ├── gradcam_examples.png
-│   │   │   └── gradcam_metrics.json
-│   │   ├── swint/                           # Swin-T Grad-CAM results
-│   │   │   ├── gradcam_examples.png
-│   │   │   └── gradcam_metrics.json
+│   │   ├── resnet50/                        # ResNet-50 Grad-CAM results (w/ png and json)
+│   │   ├── swint/                           # Swin-T Grad-CAM results(w/ png and json)
 │   │   └── gradcam_summary.json             # Overall Grad-CAM analysis summary
 │   │
 │   ├── resnet50/                            # ResNet-50 results and checkpoints
-│   │   ├── ablation/                        # Sequential ablation runs
+│   │   ├── ablation/                        # Sequential ablation runs (same as CNN ablation)
 │   │   │   ├── imbalance/
 │   │   │   ├── lr/
 │   │   │   ├── optimizer/
 │   │   │   └── summary.json
-│   │   └── best_model/
-│   │       ├── best_resnet50.pth            # Model checkpoint
-│   │       ├── resnet50_classification_report.txt
-│   │       ├── resnet50_confusion_matrix.png
-│   │       ├── resnet50_sample_predictions.png
-│   │       ├── resnet50_training_curves.png
-│   │       └── training_log.txt
+│   │   └── best_model/                      # Best ResNet-50 checkpoint, metrics, visualizations, logs
 │   │
 │   ├── swin_t/                              # Swin-T results and checkpoints
-│   │   ├── ablation/                        # Sequential ablation runs
+│   │   ├── ablation/                        # Sequential ablation runs (same as CNN ablation)
 │   │   │   ├── imbalance/
 │   │   │   ├── lr/
 │   │   │   ├── optimizer/
 │   │   │   └── summary.json
-│   │   └── best_model/
-│   │       ├── best_swin_t.pth              # Model checkpoint
-│   │       ├── swin_t_classification_report.txt
-│   │       ├── swin_t_confusion_matrix.png
-│   │       ├── swin_t_sample_predictions.png
-│   │       ├── swin_t_training_curves.png
-│   │       └── training_log.txt
+│   │   └── best_model/                      # Best Swin-T checkpoint, metrics, visualizations, logs
 │   │
 │   └── vlm/                                 # Vision-Language Model zero-shot results
 │       ├── clip/                            # CLIP ViT-B/32 results with different prompts
@@ -141,14 +116,8 @@ Dermascope-VLM/
 │   │   ├── ablation_cnn.py                  # Sequential ablation: optimizer → LR → imbalance
 │   │   ├── custom_cnn.py                    # 4-block CNN architecture definition
 │   │   └── train_cnn.py                     # Final training with best config
-│   ├── resnet50/                            # Fine-tuned ResNet-50 model
-│   │   ├── ablation_resnet50.py             # Sequential ablation
-│   │   ├── resnet50.py                      # ResNet-50 with custom head
-│   │   └── train_resnet50.py                # Final training
-│   ├── swin_t/                              # Fine-tuned Swin-T Tiny model
-│   │   ├── ablation_swin_t.py               # Sequential ablation
-│   │   ├── swin_t.py                        # Swin-T Tiny with custom dropout head
-│   │   └── train_swin_t.py                  # Final training
+│   ├── resnet50/                            # Fine-tuned ResNet-50 model with model, ablation, training
+│   ├── swin_t/                              # Swin-T Tiny model with model, ablation, training
 │   ├── dataset.py                           # HAM10000Dataset, data loaders, transforms, class weights
 │   ├── eval_gradcam.py                      # Grad-CAM generation for all models
 │   ├── eval_vlm.py                          # Zero-shot VLM evaluation (CLIP, DermLIP with prompt templates)
